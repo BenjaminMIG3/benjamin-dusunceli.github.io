@@ -161,7 +161,7 @@ function onScroll(){
       const nr=next.getBoundingClientRect();
       const start=innerHeight*.85, end=navH+40;
       const prog=Math.min(1,Math.max(0,(start-nr.top)/(start-end)));
-      card.style.transform=`scale(${1-prog*.06}) translateY(${prog*-8}px)`;
+      card.style.transform=`perspective(1200px) scale(${1-prog*.08}) translateY(${prog*-10}px) rotateX(${prog*6}deg)`;
       card.style.filter=`brightness(${1-prog*.35})`;
     }
     if(eduFlow && drawLine){
@@ -180,73 +180,7 @@ addEventListener('scroll',()=>{
 addEventListener('resize',onScroll,{passive:true});
 onScroll();
 
-/* ================= PROJECTS CAROUSEL ================= */
-(function initCarousel(){
-  const track = document.getElementById('projTrack');
-  const dotsEl = document.getElementById('projDots');
-  const prevBtn = document.getElementById('projPrev');
-  const nextBtn = document.getElementById('projNext');
-  const root = document.getElementById('projCarousel');
-  if(!track || !dotsEl || !root) return;
-
-  const slides = [...track.querySelectorAll('.proj')];
-  const n = slides.length;
-  if(!n) return;
-
-  let i = 0;
-  let timer = null;
-  const AUTO_MS = 4500;
-
-  slides.forEach((_, idx)=>{
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('role','tab');
-    b.setAttribute('aria-label', `Projet ${idx+1}`);
-    b.addEventListener('click',()=>{ go(idx); bump(); });
-    dotsEl.appendChild(b);
-  });
-  const dots = [...dotsEl.querySelectorAll('button')];
-
-  function render(){
-    track.style.transform = `translate3d(${-i * 100}%,0,0)`;
-    dots.forEach((d,idx)=> d.setAttribute('aria-selected', idx===i ? 'true' : 'false'));
-  }
-  function go(next){
-    i = ((next % n) + n) % n;
-    render();
-  }
-  function stop(){ if(timer){ clearInterval(timer); timer=null } }
-  function start(){
-    if(reduced || n < 2) return;
-    stop();
-    timer = setInterval(()=> go(i+1), AUTO_MS);
-  }
-  function bump(){ stop(); start(); }
-
-  prevBtn?.addEventListener('click',()=>{ go(i-1); bump(); });
-  nextBtn?.addEventListener('click',()=>{ go(i+1); bump(); });
-
-  root.addEventListener('mouseenter', stop);
-  root.addEventListener('mouseleave', start);
-  root.addEventListener('focusin', stop);
-  root.addEventListener('focusout', (e)=>{
-    if(!root.contains(e.relatedTarget)) start();
-  });
-
-  /* swipe tactile */
-  let x0 = null;
-  track.addEventListener('pointerdown',e=>{ x0 = e.clientX; stop(); },{passive:true});
-  track.addEventListener('pointerup',e=>{
-    if(x0 == null) return;
-    const dx = e.clientX - x0;
-    x0 = null;
-    if(Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
-    bump();
-  });
-
-  render();
-  start();
-})();
+/* Carousel 3D + tilt : gérés par assets/js/fx3d.js */
 
 /* ================= CURSOR ================= */
 if(matchMedia('(pointer:fine)').matches && !reduced){
@@ -277,20 +211,6 @@ if(matchMedia('(pointer:fine)').matches && !reduced){
       btn.style.transform=`translate(${x*.22}px,${y*.3}px)`;
     });
     btn.addEventListener('mouseleave',()=>{btn.style.transform=''});
-  });
-}
-
-/* ================= TILT + GLARE ================= */
-if(matchMedia('(pointer:fine)').matches && !reduced){
-  document.querySelectorAll('.tilt').forEach(cell=>{
-    cell.addEventListener('mousemove',e=>{
-      const r=cell.getBoundingClientRect();
-      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
-      cell.style.transform=`rotateX(${(py-.5)*-6}deg) rotateY(${(px-.5)*6}deg)`;
-      cell.style.setProperty('--gx',(px*100)+'%');
-      cell.style.setProperty('--gy',(py*100)+'%');
-    });
-    cell.addEventListener('mouseleave',()=>{cell.style.transform=''});
   });
 }
 
