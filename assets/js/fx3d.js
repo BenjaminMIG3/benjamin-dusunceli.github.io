@@ -507,8 +507,9 @@
   }
 
   function initCoverflow() {
-    const configs = [
-      {
+    /* Projets uniquement — les expériences gardent le sticky scroll */
+    try {
+      createCoverflow({
         rootId: 'projCarousel',
         trackId: 'projTrack',
         dotsId: 'projDots',
@@ -517,25 +518,10 @@
         slideSel: '.cf-card, .proj',
         label: 'Projet',
         autoMs: 4800,
-      },
-      {
-        rootId: 'xpCarousel',
-        trackId: 'xpTrack',
-        dotsId: 'xpDots',
-        prevId: 'xpPrev',
-        nextId: 'xpNext',
-        slideSel: '.cf-card, .xp',
-        label: 'Expérience',
-        autoMs: 5200,
-      },
-    ];
-    configs.forEach((cfg) => {
-      try {
-        createCoverflow(cfg);
-      } catch (err) {
-        console.error('[fx3d] coverflow', cfg.rootId, err);
-      }
-    });
+      });
+    } catch (err) {
+      console.error('[fx3d] coverflow projCarousel', err);
+    }
   }
 
   /* ============================================================
