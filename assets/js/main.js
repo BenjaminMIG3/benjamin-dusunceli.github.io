@@ -154,7 +154,7 @@ function onScroll(){
   if(progressBar && max > 0) progressBar.style.width=(scrollY/max*100)+'%';
 
   if(!reduced){
-    /* Expériences : sticky scroll + profondeur 3D (pas de carousel) */
+    /* Expériences : sticky scroll + 3D sur la carte (pas sur le parent sticky) */
     for(let i=0;i<stackItems.length-1;i++){
       const card=stackItems[i].querySelector('.xp');
       const next=stackItems[i+1];
@@ -162,13 +162,15 @@ function onScroll(){
       const nr=next.getBoundingClientRect();
       const start=innerHeight*.85, end=navH+40;
       const prog=Math.min(1,Math.max(0,(start-nr.top)/(start-end)));
-      card.style.setProperty('--xp-s', (1 - prog * 0.1).toFixed(4));
-      card.style.setProperty('--xp-y', (prog * -14).toFixed(2) + 'px');
-      card.style.setProperty('--xp-z', (prog * -80).toFixed(1) + 'px');
-      card.style.setProperty('--xp-rx', (prog * 10).toFixed(2) + 'deg');
-      card.style.setProperty('--xp-ry', (prog * -4).toFixed(2) + 'deg');
-      card.style.filter=`brightness(${1 - prog * 0.38})`;
-      card.classList.toggle('is-recessed', prog > 0.15);
+      const s=(1-prog*.1).toFixed(4);
+      const y=(prog*-12).toFixed(2);
+      const rx=(prog*8).toFixed(2);
+      const ry=(prog*-3).toFixed(2);
+      const z=(prog*-60).toFixed(1);
+      card.style.transform=
+        `perspective(1200px) translate3d(0,${y}px,${z}px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${s})`;
+      card.style.filter=`brightness(${1-prog*.38})`;
+      card.classList.toggle('is-recessed', prog>0.12);
     }
     if(eduFlow && drawLine){
       const r=eduFlow.getBoundingClientRect();

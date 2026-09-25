@@ -306,15 +306,15 @@ section{padding:28px 0;position:relative}
 
 /* ================= EXPERIENCE — sticky stack 3D ================= */
 .stack{
-  display:flex;flex-direction:column;gap:0;
-  perspective:1400px;
-  perspective-origin:50% 20%;
+  display:flex;
+  flex-direction:column;
+  gap:0;
 }
 .stack-item{
   position:sticky;
   top:calc(var(--nav-h) + 24px);
-  padding-bottom:28px;
-  transform-style:preserve-3d;
+  padding-bottom:24px;
+  /* pas de transform/perspective ici : ça casse sticky */
 }
 .xp{
   background:var(--card);
@@ -324,17 +324,9 @@ section{padding:28px 0;position:relative}
   min-height:300px;
   box-shadow:0 -20px 60px rgba(0,0,0,.28);
   transform-origin:top center;
-  transform-style:preserve-3d;
-  will-change:transform,filter,box-shadow;
+  will-change:transform,filter;
   overflow:hidden;position:relative;
   transition:border-color .4s,box-shadow .4s;
-  /* profondeur 3D de base */
-  --xp-rx:0deg;--xp-ry:0deg;--xp-z:0px;--xp-s:1;--xp-y:0px;
-  transform:
-    translate3d(0,var(--xp-y),var(--xp-z))
-    rotateX(var(--xp-rx))
-    rotateY(var(--xp-ry))
-    scale(var(--xp-s));
 }
 html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.1)}
 .xp::before{
@@ -348,6 +340,9 @@ html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.1)}
 .xp-head{
   display:flex;flex-direction:column;gap:6px;margin-bottom:22px;padding-right:90px;
   transform:translateZ(18px);
+}
+.xp-head{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:22px;padding-right:90px;
 }
 .xp-org{font-family:var(--mono);font-size:12.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em}
 .xp h3{font-family:var(--display);font-size:clamp(24px,3.4vw,38px);font-weight:700;letter-spacing:-.025em;line-height:1.05}
@@ -386,7 +381,6 @@ html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.1)}
 }
 .xp.is-recessed{
   border-color:var(--line);
-  box-shadow:0 -12px 40px rgba(0,0,0,.35);
 }
 
 /* ================= PROJECTS — coverflow 3D ================= */
@@ -730,9 +724,5 @@ footer{
   .hero-3d{display:none}
   .hero h1 .l > span.float-3d{animation:none;filter:none}
   .sec-head{transform:none !important}
-  .xp{
-    --xp-rx:0deg !important;--xp-ry:0deg !important;--xp-z:0px !important;
-    --xp-s:1 !important;--xp-y:0px !important;
-    filter:none !important;
-  }
+  .xp{transform:none !important;filter:none !important}
 }
