@@ -413,26 +413,28 @@
     function render() {
       const isMobile = window.innerWidth < 820;
       const trackW = track.clientWidth || root.clientWidth || window.innerWidth;
-      const xStep = isMobile ? trackW * 0.52 : trackW * 0.38;
-      const rot = isMobile ? 46 : 52;
-      const zStep = isMobile ? 140 : 180;
+      /* Mobile : voisines presque hors champ, rotation douce → pas de texte écrasé */
+      const xStep = isMobile ? trackW * 0.78 : trackW * 0.38;
+      const rot = isMobile ? 22 : 48;
+      const zStep = isMobile ? 80 : 180;
 
       slides.forEach((slide, idx) => {
         const offset = idx - i;
         const abs = Math.abs(offset);
-        const hidden = abs > 2;
-        const vis = Math.max(-2, Math.min(2, offset));
+        const hidden = abs > (isMobile ? 1 : 2);
+        const vis = Math.max(isMobile ? -1 : -2, Math.min(isMobile ? 1 : 2, offset));
         const visAbs = Math.abs(vis);
         slide.style.setProperty('--cf-x', (vis * xStep).toFixed(1) + 'px');
         slide.style.setProperty('--cf-z', (-visAbs * zStep).toFixed(1) + 'px');
         slide.style.setProperty('--cf-ry', vis * -rot + 'deg');
-        slide.style.setProperty('--cf-s', (1 - visAbs * 0.08).toFixed(3));
+        slide.style.setProperty('--cf-s', (1 - visAbs * (isMobile ? 0.04 : 0.08)).toFixed(3));
         slide.style.opacity = hidden
           ? '0'
-          : String(Math.max(0.4, 1 - abs * 0.2));
+          : String(Math.max(0.45, 1 - abs * 0.25));
         slide.style.zIndex = String(100 - abs);
         slide.style.visibility = hidden ? 'hidden' : 'visible';
         slide.style.pointerEvents = offset === 0 ? 'auto' : 'none';
+        slide.style.position = 'absolute';
         slide.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true');
         slide.classList.toggle('is-active', offset === 0);
       });
@@ -505,25 +507,34 @@
   }
 
   function initCoverflow() {
-    createCoverflow({
-      rootId: 'projCarousel',
-      trackId: 'projTrack',
-      dotsId: 'projDots',
-      prevId: 'projPrev',
-      nextId: 'projNext',
-      slideSel: '.proj.cf-card, .proj',
-      label: 'Projet',
-      autoMs: 4800,
-    });
-    createCoverflow({
-      rootId: 'xpCarousel',
-      trackId: 'xpTrack',
-      dotsId: 'xpDots',
-      prevId: 'xpPrev',
-      nextId: 'xpNext',
-      slideSel: '.xp.cf-card, .xp',
-      label: 'Expérience',
-      autoMs: 5200,
+    const configs = [
+      {
+        rootId: 'projCarousel',
+        trackId: 'projTrack',
+        dotsId: 'projDots',
+        prevId: 'projPrev',
+        nextId: 'projNext',
+        slideSel: '.cf-card, .proj',
+        label: 'Projet',
+        autoMs: 4800,
+      },
+      {
+        rootId: 'xpCarousel',
+        trackId: 'xpTrack',
+        dotsId: 'xpDots',
+        prevId: 'xpPrev',
+        nextId: 'xpNext',
+        slideSel: '.cf-card, .xp',
+        label: 'Expérience',
+        autoMs: 5200,
+      },
+    ];
+    configs.forEach((cfg) => {
+      try {
+        createCoverflow(cfg);
+      } catch (err) {
+        console.error('[fx3d] coverflow', cfg.rootId, err);
+      }
     });
   }
 
