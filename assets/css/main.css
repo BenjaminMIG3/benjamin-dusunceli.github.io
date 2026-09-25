@@ -328,7 +328,13 @@ html[data-theme="light"] .xp{box-shadow:0 16px 50px rgba(20,20,40,.08)}
 .xp h3{font-family:var(--display);font-size:clamp(24px,3.4vw,38px);font-weight:700;letter-spacing:-.025em;line-height:1.05}
 .xp-date{font-family:var(--mono);font-size:12px;color:var(--text-3)}
 .xp-body{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;min-width:0}
-.xp-desc{color:var(--text-2);font-size:15.5px;min-width:0}
+.xp-desc{
+  color:var(--text-2);font-size:15.5px;min-width:0;
+  overflow-wrap:anywhere;word-break:break-word;
+}
+.xp h3,.proj h3,.xp-org,.xp li,.xp-date{
+  overflow-wrap:anywhere;word-break:break-word;
+}
 .xp ul{
   list-style:none;display:flex;flex-direction:column;gap:9px;
   margin:0;padding:0;min-width:0;
@@ -367,6 +373,7 @@ html[data-theme="light"] .xp{box-shadow:0 16px 50px rgba(20,20,40,.08)}
   overflow:hidden;
   border-radius:24px;
   min-width:0;
+  min-height:320px;
 }
 .carousel.coverflow .carousel-viewport{
   height:clamp(360px,48vw,460px);
@@ -380,6 +387,16 @@ html[data-theme="light"] .xp{box-shadow:0 16px 50px rgba(20,20,40,.08)}
   display:flex;
   transition:transform .55s var(--ease-apple);
   will-change:transform;
+}
+/* Jamais de cartes écrasées en colonnes (fallback hors coverflow JS) */
+.carousel-track > .cf-card,
+.carousel-track > .proj,
+.carousel-track > .xp{
+  flex:0 0 100%;
+  width:100%;
+  min-width:100%;
+  max-width:100%;
+  box-sizing:border-box;
 }
 .carousel.coverflow .coverflow-track,
 .carousel.coverflow .carousel-track.coverflow-track{
@@ -407,10 +424,13 @@ html[data-theme="light"] .xp{box-shadow:0 16px 50px rgba(20,20,40,.08)}
   --tilt-x:0deg;--tilt-y:0deg;--gx:50%;--gy:50%;
 }
 .carousel.coverflow .proj,
-.carousel.coverflow .xp.cf-card{
-  position:absolute;
+.carousel.coverflow .xp.cf-card,
+.carousel.coverflow .cf-card{
+  position:absolute !important;
   top:50%;left:50%;
   width:min(62%,560px);
+  min-width:0;
+  max-width:min(62%,560px);
   min-height:0;
   height:auto;
   max-height:90%;
@@ -459,6 +479,21 @@ html[data-theme="light"] .carousel.coverflow .xp.cf-card.is-active{
   flex:1 1 auto;
   min-width:0;
   width:100%;
+  overflow:hidden;
+}
+.carousel.coverflow .proj .xp-desc,
+.carousel.coverflow .xp.cf-card .xp-desc{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:4;
+  overflow:hidden;
+}
+.carousel.coverflow .proj ul,
+.carousel.coverflow .xp.cf-card ul{
+  width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+  max-height:9.5em;
 }
 .carousel.coverflow .proj .xp-tags,
 .carousel.coverflow .xp.cf-card .xp-tags{
@@ -467,11 +502,7 @@ html[data-theme="light"] .carousel.coverflow .xp.cf-card.is-active{
   width:100%;
   position:relative;
   z-index:1;
-}
-.carousel.coverflow .proj ul,
-.carousel.coverflow .xp.cf-card ul{
-  width:100%;
-  box-sizing:border-box;
+  flex-shrink:0;
 }
 .proj::before{
   content:attr(data-idx);
@@ -623,46 +654,55 @@ footer{
   .contact{padding:32px 0 28px}
   .proj{min-height:0}
   .proj .xp-body{grid-template-columns:1fr;gap:14px}
-  /* listes + tags : recentrés dans la carte (plus collés à gauche) */
+  /* Mobile : carte quasi pleine largeur, contenu contenu */
   .carousel.coverflow .proj,
-  .carousel.coverflow .xp.cf-card{
-    width:min(84%,440px);
-    padding:20px 18px 18px;
+  .carousel.coverflow .xp.cf-card,
+  .carousel.coverflow .cf-card{
+    width:min(88vw,420px);
+    max-width:min(88vw,420px);
+    padding:18px 16px 16px;
+    max-height:94%;
+  }
+  .carousel.coverflow .proj .xp-desc,
+  .carousel.coverflow .xp.cf-card .xp-desc{
+    -webkit-line-clamp:3;
+    font-size:14px;
   }
   .carousel.coverflow .proj ul,
-  .carousel.coverflow .xp.cf-card ul,
-  .carousel.coverflow .proj .xp-tags,
-  .carousel.coverflow .xp.cf-card .xp-tags{
-    padding-left:2px;
-    padding-right:2px;
-    margin-left:0;
-    margin-right:0;
+  .carousel.coverflow .xp.cf-card ul{
+    max-height:7.5em;
+    gap:7px;
   }
   .carousel.coverflow .proj li,
   .carousel.coverflow .xp.cf-card li{
     padding-left:1.35rem;
-    font-size:13px;
+    font-size:12.5px;
   }
   .carousel.coverflow .proj .xp-tags,
   .carousel.coverflow .xp.cf-card .xp-tags{
     gap:6px;
     justify-content:flex-start;
+    padding-top:12px;
   }
   .carousel.coverflow .proj .tag,
   .carousel.coverflow .xp.cf-card .tag{
-    font-size:11px;
-    padding:5px 10px;
+    font-size:10.5px;
+    padding:4px 9px;
   }
   .carousel{display:block;position:relative}
-  .carousel.coverflow .carousel-viewport{height:clamp(400px,88vw,520px)}
-  #xpCarousel.carousel.coverflow .carousel-viewport{height:clamp(420px,92vw,560px)}
+  .carousel.coverflow .carousel-viewport{
+    height:clamp(420px,90vw,540px);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  }
+  #xpCarousel.carousel.coverflow .carousel-viewport{height:clamp(440px,95vw,580px)}
   .carousel-btn{
     position:absolute;z-index:6;top:50%;transform:translateY(-50%);
     width:40px;height:40px;background:var(--nav-bg);
     -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   }
-  .carousel-btn.prev{left:8px}
-  .carousel-btn.next{right:8px}
+  .carousel-btn.prev{left:6px}
+  .carousel-btn.next{right:6px}
   .carousel-btn:hover{transform:translateY(-50%) scale(1.06)}
   .carousel-btn:active{transform:translateY(-50%) scale(.94)}
 }
