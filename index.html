@@ -78,10 +78,12 @@
       <h2 class="sec-title"><span data-i18n="xp_t1">Quatre étapes,</span><br><span class="dim" data-i18n="xp_t2">un même réflexe : construire.</span></h2>
     </div>
 
-    <div class="stack" id="stack">
+    <div class="carousel" id="xpCarousel" aria-roledescription="carousel">
+      <button type="button" class="carousel-btn prev" id="xpPrev" aria-label="Expérience précédente">←</button>
+      <div class="carousel-viewport" id="xpRail">
+        <div class="carousel-track" id="xpTrack">
 
-      <div class="stack-item">
-        <article class="xp" data-idx="04">
+        <article class="xp cf-card" data-idx="04">
           <div class="xp-head">
             <p class="xp-org">Carrefour Supply Chain — Évry</p>
             <h3 data-i18n="xp1_r">Développeur logiciel web Python</h3>
@@ -100,10 +102,8 @@
             <span class="tag">Python</span><span class="tag">Django</span><span class="tag">WebSocket</span><span class="tag">SQL</span>
           </div>
         </article>
-      </div>
 
-      <div class="stack-item">
-        <article class="xp" data-idx="03">
+        <article class="xp cf-card" data-idx="03">
           <div class="xp-head">
             <p class="xp-org">123C4sh — Corbeil-Essonnes</p>
             <h3 data-i18n="xp2_r">Développeur logiciel Java</h3>
@@ -121,10 +121,8 @@
             <span class="tag">Java</span><span class="tag">MySQL</span><span class="tag">Apache</span>
           </div>
         </article>
-      </div>
 
-      <div class="stack-item">
-        <article class="xp" data-idx="02">
+        <article class="xp cf-card" data-idx="02">
           <div class="xp-head">
             <p class="xp-org">Bouygues Construction Privée — Guyancourt</p>
             <h3 data-i18n="xp3_r">Étude de prix — Construction</h3>
@@ -141,10 +139,8 @@
             <span class="tag" data-i18n="xp3_tag1">Chiffrage</span><span class="tag" data-i18n="xp3_tag2">Métrés</span>
           </div>
         </article>
-      </div>
 
-      <div class="stack-item">
-        <article class="xp" data-idx="01">
+        <article class="xp cf-card" data-idx="01">
           <div class="xp-head">
             <p class="xp-org">HackerLoop — Paris</p>
             <h3 data-i18n="xp4_r">Développeur C++</h3>
@@ -160,9 +156,12 @@
             <span class="tag">C++</span><span class="tag">Arduino</span><span class="tag" data-i18n="xp4_tag">Électronique</span>
           </div>
         </article>
-      </div>
 
+        </div>
+      </div>
+      <button type="button" class="carousel-btn next" id="xpNext" aria-label="Expérience suivante">→</button>
     </div>
+    <div class="carousel-dots" id="xpDots" role="tablist" aria-label="Expériences"></div>
   </div>
 </section>
 
@@ -178,7 +177,7 @@
       <button type="button" class="carousel-btn prev" id="projPrev" aria-label="Projet précédent">←</button>
       <div class="carousel-viewport" id="projRail">
         <div class="carousel-track" id="projTrack">
-        <article class="proj" data-idx="01">
+        <article class="proj cf-card" data-idx="01">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj1_s">SaaS BTP · Django / React</p>
             <h3 data-i18n="pj1_t">Ossatura Soft</h3>
@@ -193,7 +192,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">React</span><span class="tag">IA</span></div>
         </article>
-        <article class="proj" data-idx="02">
+        <article class="proj cf-card" data-idx="02">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj2_s">app couple · monorepo</p>
             <h3 data-i18n="pj2_t">CoupleSync</h3>
@@ -208,7 +207,7 @@
           </div>
           <div class="xp-tags"><span class="tag">TypeScript</span><span class="tag">React Native</span><span class="tag">WebSocket</span></div>
         </article>
-        <article class="proj" data-idx="03">
+        <article class="proj cf-card" data-idx="03">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj3_s">Carrefour · Django</p>
             <h3 data-i18n="pj3_t">Galaxy Reborn</h3>
@@ -223,7 +222,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Celery</span><span class="tag">PostgreSQL</span></div>
         </article>
-        <article class="proj" data-idx="04">
+        <article class="proj cf-card" data-idx="04">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj4_s">finance perso · Go</p>
             <h3 data-i18n="pj4_t">Wallet Manager</h3>
@@ -238,7 +237,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Go</span><span class="tag">PostgreSQL</span><span class="tag">Fiber</span></div>
         </article>
-        <article class="proj" data-idx="05">
+        <article class="proj cf-card" data-idx="05">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj5_s">projet perso · en cours</p>
             <h3 data-i18n="pj5_t">Émulateur Game Boy</h3>
@@ -253,7 +252,7 @@
           </div>
           <div class="xp-tags"><span class="tag">C</span><span class="tag">SM83</span><span class="tag">Émulation</span></div>
         </article>
-        <article class="proj" data-idx="06">
+        <article class="proj cf-card" data-idx="06">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj6_s">projet perso · hardware</p>
             <h3 data-i18n="pj6_t">Micro-drone DIY</h3>
@@ -268,7 +267,7 @@
           </div>
           <div class="xp-tags"><span class="tag">C</span><span class="tag">ESP32-S3</span><span class="tag">Firmware</span></div>
         </article>
-        <article class="proj" data-idx="07">
+        <article class="proj cf-card" data-idx="07">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj7_s">moteur maison · OpenGL</p>
             <h3 data-i18n="pj7_t">Moteur 3D C++</h3>
@@ -283,7 +282,7 @@
           </div>
           <div class="xp-tags"><span class="tag">C++</span><span class="tag">OpenGL</span><span class="tag">CMake</span></div>
         </article>
-        <article class="proj" data-idx="08">
+        <article class="proj cf-card" data-idx="08">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj8_s">jeu · C++ / SDL2</p>
             <h3 data-i18n="pj8_t">Pacman Remake</h3>
@@ -298,7 +297,7 @@
           </div>
           <div class="xp-tags"><span class="tag">C++</span><span class="tag">SDL2</span></div>
         </article>
-        <article class="proj" data-idx="09">
+        <article class="proj cf-card" data-idx="09">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj9_s">123C4sh · Java Spring</p>
             <h3 data-i18n="pj9_t">Softy</h3>
@@ -313,7 +312,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">MySQL</span></div>
         </article>
-        <article class="proj" data-idx="10">
+        <article class="proj cf-card" data-idx="10">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj10_s">Go · TypeScript</p>
             <h3 data-i18n="pj10_t">Translator TR</h3>
@@ -328,7 +327,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Go</span><span class="tag">TypeScript</span></div>
         </article>
-        <article class="proj" data-idx="11">
+        <article class="proj cf-card" data-idx="11">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj11_s">SaaS transport · Python</p>
             <h3 data-i18n="pj11_t">TMS / SCM</h3>
@@ -343,7 +342,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">SaaS</span><span class="tag">TMS</span></div>
         </article>
-        <article class="proj" data-idx="12">
+        <article class="proj cf-card" data-idx="12">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj12_s">scraping · Python</p>
             <h3 data-i18n="pj12_t">Scrap Auto</h3>
@@ -358,7 +357,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">Scraping</span></div>
         </article>
-        <article class="proj" data-idx="13">
+        <article class="proj cf-card" data-idx="13">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj13_s">finance · Python / JS</p>
             <h3 data-i18n="pj13_t">Mes Frais</h3>
@@ -373,7 +372,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">JWT</span></div>
         </article>
-        <article class="proj" data-idx="14">
+        <article class="proj cf-card" data-idx="14">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj14_s">projet C++ · moteur</p>
             <h3 data-i18n="pj14_t">Pirate</h3>
@@ -388,7 +387,7 @@
           </div>
           <div class="xp-tags"><span class="tag">C++</span><span class="tag">CMake</span></div>
         </article>
-        <article class="proj" data-idx="15">
+        <article class="proj cf-card" data-idx="15">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj15_s">SaaS chantier · web</p>
             <h3 data-i18n="pj15_t">Ossature SaaS</h3>
@@ -403,7 +402,7 @@
           </div>
           <div class="xp-tags"><span class="tag">HTML</span><span class="tag">PHP</span><span class="tag">Python</span><span class="tag">JS</span></div>
         </article>
-        <article class="proj" data-idx="16">
+        <article class="proj cf-card" data-idx="16">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj16_s">SaaS · Django</p>
             <h3 data-i18n="pj16_t">Trade Pro</h3>
@@ -418,7 +417,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">JavaScript</span></div>
         </article>
-        <article class="proj" data-idx="17">
+        <article class="proj cf-card" data-idx="17">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj17_s">hackathon IA · Python</p>
             <h3 data-i18n="pj17_t">Deep Snake</h3>
@@ -433,7 +432,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Python</span><span class="tag">Game</span><span class="tag">Hackathon</span></div>
         </article>
-        <article class="proj" data-idx="18">
+        <article class="proj cf-card" data-idx="18">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj18_s">Android · Kotlin</p>
             <h3 data-i18n="pj18_t">Dev Mobile</h3>
@@ -448,7 +447,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Kotlin</span><span class="tag">Android</span></div>
         </article>
-        <article class="proj" data-idx="19">
+        <article class="proj cf-card" data-idx="19">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj19_s">iOS · Swift</p>
             <h3 data-i18n="pj19_t">Holly App</h3>
@@ -463,7 +462,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Swift</span><span class="tag">iOS</span></div>
         </article>
-        <article class="proj" data-idx="20">
+        <article class="proj cf-card" data-idx="20">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj20_s">gestion stock · école</p>
             <h3 data-i18n="pj20_t">Stock Ynov</h3>
@@ -478,7 +477,7 @@
           </div>
           <div class="xp-tags"><span class="tag">Stock</span><span class="tag">Fullstack</span></div>
         </article>
-        <article class="proj" data-idx="21">
+        <article class="proj cf-card" data-idx="21">
           <div class="proj-head-card">
             <p class="xp-org" data-i18n="pj21_s">e-commerce · Java</p>
             <h3 data-i18n="pj21_t">MangoBox</h3>

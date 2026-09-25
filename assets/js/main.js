@@ -139,14 +139,12 @@ const io = new IntersectionObserver(entries=>{
     io.unobserve(e.target);
   });
 },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
-document.querySelectorAll('.reveal,.edu,.sec-head,.stack-item,.cell,footer').forEach(el=>io.observe(el));
+document.querySelectorAll('.reveal,.edu,.sec-head,.cell,footer').forEach(el=>io.observe(el));
 
 /* ================= SCROLL ENGINE ================= */
 const progressBar=document.getElementById('progressBar');
-const stackItems=[...document.querySelectorAll('.stack-item')];
 const eduFlow=document.getElementById('eduFlow');
 const drawLine=document.getElementById('drawLine');
-const navH = 56;
 
 function onScroll(){
   const doc=document.documentElement;
@@ -154,16 +152,6 @@ function onScroll(){
   if(progressBar && max > 0) progressBar.style.width=(scrollY/max*100)+'%';
 
   if(!reduced){
-    for(let i=0;i<stackItems.length-1;i++){
-      const card=stackItems[i].querySelector('.xp');
-      const next=stackItems[i+1];
-      if(!card||!next) continue;
-      const nr=next.getBoundingClientRect();
-      const start=innerHeight*.85, end=navH+40;
-      const prog=Math.min(1,Math.max(0,(start-nr.top)/(start-end)));
-      card.style.transform=`perspective(1200px) scale(${1-prog*.08}) translateY(${prog*-10}px) rotateX(${prog*6}deg)`;
-      card.style.filter=`brightness(${1-prog*.35})`;
-    }
     if(eduFlow && drawLine){
       const r=eduFlow.getBoundingClientRect();
       const prog=Math.min(1,Math.max(0,(innerHeight*.75-r.top)/r.height));

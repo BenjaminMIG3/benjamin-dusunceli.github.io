@@ -374,17 +374,17 @@
   }
 
   /* ============================================================
-   * CAROUSEL — coverflow 3D
+   * CAROUSEL — coverflow 3D (réutilisable)
    * ============================================================ */
-  function initCoverflow() {
-    const track = document.getElementById('projTrack');
-    const dotsEl = document.getElementById('projDots');
-    const prevBtn = document.getElementById('projPrev');
-    const nextBtn = document.getElementById('projNext');
-    const root = document.getElementById('projCarousel');
+  function createCoverflow(opts) {
+    const track = document.getElementById(opts.trackId);
+    const dotsEl = document.getElementById(opts.dotsId);
+    const prevBtn = document.getElementById(opts.prevId);
+    const nextBtn = document.getElementById(opts.nextId);
+    const root = document.getElementById(opts.rootId);
     if (!track || !dotsEl || !root) return;
 
-    const slides = [...track.querySelectorAll('.proj')];
+    const slides = [...track.querySelectorAll(opts.slideSel || '.cf-card')];
     const n = slides.length;
     if (!n) return;
 
@@ -393,14 +393,15 @@
 
     let i = 0;
     let timer = null;
-    const AUTO_MS = 4800;
+    const AUTO_MS = opts.autoMs || 4800;
+    const label = opts.label || 'Slide';
 
     dotsEl.innerHTML = '';
     slides.forEach((_, idx) => {
       const b = document.createElement('button');
       b.type = 'button';
       b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', 'Projet ' + (idx + 1));
+      b.setAttribute('aria-label', label + ' ' + (idx + 1));
       b.addEventListener('click', () => {
         go(idx);
         bump();
@@ -420,17 +421,17 @@
         const offset = idx - i;
         const abs = Math.abs(offset);
         const hidden = abs > 2;
-        slide.style.setProperty('--cf-x', (offset * xStep).toFixed(1) + 'px');
-        slide.style.setProperty('--cf-z', (-abs * zStep).toFixed(1) + 'px');
-        slide.style.setProperty('--cf-ry', (offset * -rot) + 'deg');
-        slide.style.setProperty(
-          '--cf-s',
-          (1 - Math.min(abs, 2) * 0.08).toFixed(3)
-        );
+        const vis = Math.max(-2, Math.min(2, offset));
+        const visAbs = Math.abs(vis);
+        slide.style.setProperty('--cf-x', (vis * xStep).toFixed(1) + 'px');
+        slide.style.setProperty('--cf-z', (-visAbs * zStep).toFixed(1) + 'px');
+        slide.style.setProperty('--cf-ry', vis * -rot + 'deg');
+        slide.style.setProperty('--cf-s', (1 - visAbs * 0.08).toFixed(3));
         slide.style.opacity = hidden
           ? '0'
           : String(Math.max(0.4, 1 - abs * 0.2));
         slide.style.zIndex = String(100 - abs);
+        slide.style.visibility = hidden ? 'hidden' : 'visible';
         slide.style.pointerEvents = offset === 0 ? 'auto' : 'none';
         slide.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true');
         slide.classList.toggle('is-active', offset === 0);
@@ -451,7 +452,7 @@
       }
     }
     function start() {
-      if (reduced || n < 2) return;
+      if (reduced || n < 2 || opts.auto === false) return;
       stop();
       timer = setInterval(() => go(i + 1), AUTO_MS);
     }
@@ -460,7 +461,6 @@
       start();
     }
 
-    /* remplace les handlers éventuels du carousel plat */
     prevBtn?.addEventListener('click', () => {
       go(i - 1);
       bump();
@@ -495,20 +495,36 @@
       bump();
     });
 
-    window.addEventListener(
-      'resize',
-      () => {
-        render();
-      },
-      { passive: true }
-    );
+    window.addEventListener('resize', render, { passive: true });
 
     render();
     requestAnimationFrame(() => {
       render();
       start();
     });
-    window.__coverflowReady = true;
+  }
+
+  function initCoverflow() {
+    createCoverflow({
+      rootId: 'projCarousel',
+      trackId: 'projTrack',
+      dotsId: 'projDots',
+      prevId: 'projPrev',
+      nextId: 'projNext',
+      slideSel: '.proj.cf-card, .proj',
+      label: 'Projet',
+      autoMs: 4800,
+    });
+    createCoverflow({
+      rootId: 'xpCarousel',
+      trackId: 'xpTrack',
+      dotsId: 'xpDots',
+      prevId: 'xpPrev',
+      nextId: 'xpNext',
+      slideSel: '.xp.cf-card, .xp',
+      label: 'Expérience',
+      autoMs: 5200,
+    });
   }
 
   /* ============================================================
@@ -633,11 +649,20 @@
 
   /* boot */
   function boot() {
-    initHeroMesh();
-    initCoverflow();
-    initTilt();
-    initDepthScroll();
-    initHeroFloat();
+    const steps = [
+      initHeroMesh,
+      initCoverflow,
+      initTilt,
+      initDepthScroll,
+      initHeroFloat,
+    ];
+    steps.forEach((fn) => {
+      try {
+        fn();
+      } catch (err) {
+        console.error('[fx3d]', fn.name, err);
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
