@@ -357,16 +357,15 @@ html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.08)}
   gap:12px;
 }
 .carousel-viewport{
+  /* clip ici ; perspective sur le track (overflow+perspective aplati le 3D) */
   overflow:hidden;
   border-radius:24px;
   min-width:0;
-  perspective:1400px;
-  perspective-origin:50% 50%;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
 }
 .carousel.coverflow .carousel-viewport{
-  height:clamp(340px,52vw,440px);
+  height:clamp(360px,48vw,460px);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);
 }
 .carousel-track{
   display:flex;
@@ -379,6 +378,8 @@ html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.08)}
   position:relative;
   width:100%;
   height:100%;
+  perspective:1200px;
+  perspective-origin:50% 45%;
   transform-style:preserve-3d;
   transition:none;
   touch-action:pan-y;
@@ -399,12 +400,22 @@ html[data-theme="light"] .xp{box-shadow:0 -16px 50px rgba(20,20,40,.08)}
 .carousel.coverflow .proj{
   position:absolute;
   top:50%;left:50%;
-  width:min(78%,720px);
+  width:min(62%,560px);
   min-height:0;
   height:auto;
-  max-height:92%;
+  max-height:90%;
+  /* transform via variables — plus fiable que style inline seul */
+  --cf-x:0px;
+  --cf-z:0px;
+  --cf-ry:0deg;
+  --cf-s:1;
+  transform:
+    translate3d(-50%,-50%,0)
+    translate3d(var(--cf-x),0,var(--cf-z))
+    rotateY(var(--cf-ry))
+    scale(var(--cf-s));
   transform-style:preserve-3d;
-  transition:transform .6s var(--ease-apple),opacity .5s var(--ease-apple),border-color .4s,box-shadow .5s;
+  transition:transform .55s var(--ease-apple),opacity .45s var(--ease-apple),border-color .4s,box-shadow .5s;
   will-change:transform,opacity;
   backface-visibility:hidden;
   box-shadow:
@@ -577,8 +588,8 @@ footer{
   .proj{min-height:0}
   .proj .xp-body{grid-template-columns:1fr}
   .carousel{display:block;position:relative}
-  .carousel.coverflow .carousel-viewport{height:clamp(360px,78vw,460px)}
-  .carousel.coverflow .proj{width:min(88%,560px);padding:22px 20px}
+  .carousel.coverflow .carousel-viewport{height:clamp(380px,82vw,480px)}
+  .carousel.coverflow .proj{width:min(78%,420px);padding:22px 20px}
   .carousel-btn{
     position:absolute;z-index:6;top:50%;transform:translateY(-50%);
     width:40px;height:40px;background:var(--nav-bg);

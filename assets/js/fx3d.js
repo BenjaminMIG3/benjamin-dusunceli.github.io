@@ -411,30 +411,26 @@
 
     function render() {
       const isMobile = window.innerWidth < 820;
-      const xStep = isMobile ? 72 : 58;
-      const rot = isMobile ? 38 : 42;
-      const zStep = isMobile ? 90 : 120;
+      const trackW = track.clientWidth || root.clientWidth || window.innerWidth;
+      const xStep = isMobile ? trackW * 0.52 : trackW * 0.38;
+      const rot = isMobile ? 46 : 52;
+      const zStep = isMobile ? 140 : 180;
 
       slides.forEach((slide, idx) => {
         const offset = idx - i;
         const abs = Math.abs(offset);
         const hidden = abs > 2;
-        slide.style.transform =
-          'translate(-50%, -50%)' +
-          ' translateX(' +
-          offset * xStep +
-          '%)' +
-          ' translateZ(' +
-          -abs * zStep +
-          'px)' +
-          ' rotateY(' +
-          offset * -rot +
-          'deg)' +
-          ' scale(' +
-          (1 - Math.min(abs, 2) * 0.1) +
-          ')';
-        slide.style.opacity = hidden ? '0' : String(1 - abs * 0.28);
-        slide.style.zIndex = String(n - abs);
+        slide.style.setProperty('--cf-x', (offset * xStep).toFixed(1) + 'px');
+        slide.style.setProperty('--cf-z', (-abs * zStep).toFixed(1) + 'px');
+        slide.style.setProperty('--cf-ry', (offset * -rot) + 'deg');
+        slide.style.setProperty(
+          '--cf-s',
+          (1 - Math.min(abs, 2) * 0.08).toFixed(3)
+        );
+        slide.style.opacity = hidden
+          ? '0'
+          : String(Math.max(0.4, 1 - abs * 0.2));
+        slide.style.zIndex = String(100 - abs);
         slide.style.pointerEvents = offset === 0 ? 'auto' : 'none';
         slide.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true');
         slide.classList.toggle('is-active', offset === 0);
@@ -508,9 +504,10 @@
     );
 
     render();
-    start();
-
-    /* désactive l'ancien carousel plat (évite double interval) */
+    requestAnimationFrame(() => {
+      render();
+      start();
+    });
     window.__coverflowReady = true;
   }
 
